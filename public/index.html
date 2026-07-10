@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radhe Handicraft</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/917983007915"
+   class="whatsapp-float"
+   target="_blank">
+   <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+  <div class="container">
+
+    <div class="brand-search">
+
+      <div class="brand">
+        <img src="/images/RH LOGO.png" alt="Radhe Logo">
+        <div>
+          <h1>Radhe Handicraft</h1>
+          <span>Handcrafted pieces • Wedding • Festive • Raw</span>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <input type="text" id="searchInput" placeholder="Search products..."
+               onkeydown="if(event.key==='Enter') window.location='/raw.html?q='+encodeURIComponent(this.value)">
+      </div>
+
+    </div>
+
+    <nav class="main-nav">
+
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <div class="nav-links" id="navLinks">
+        <a href="/index.html">Home</a>
+        <a href="/wedding.html">Wedding</a>
+        <a href="/festive.html">Festive</a>
+        <a href="/raw.html">Raw Material</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+
+      <div class="cart-icon" onclick="toggleCart()">
+        🛒 <span id="cartCount">0</span>
+      </div>
+
+    </nav>
+
+  </div>
+</header>
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+
+  <div class="hero-left">
+    <span class="badge">✨ Premium Catalogue</span>
+
+    <h2>A catalogue that feels like a showroom.</h2>
+
+    <p>
+      Discover handcrafted products with full details.
+      Add to cart, then send your selection via WhatsApp —
+      Radhe Handicraft will confirm and process your order personally.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="/wedding.html" class="primary-btn">
+        Explore Wedding Collection →
+      </a>
+      <a href="/contact.html" class="secondary-btn">
+        Contact &amp; Enquiry
+      </a>
+    </div>
+
+    <div class="hero-tags">
+      <span>WhatsApp checkout</span>
+      <span>No online payments</span>
+      <span>Manual confirmation</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="how-card">
+
+      <div class="how-header">
+        <h3>How it works</h3>
+        <span class="steps-badge">3 steps</span>
+      </div>
+
+      <div class="step">
+        <span class="step-number">Step 1</span>
+        <h4>Browse products</h4>
+        <p>Search, filter by collection, open product details.</p>
+      </div>
+
+      <div class="step">
+        <span class="step-number">Step 2</span>
+        <h4>Add to cart</h4>
+        <p>Choose quantities and build your requirement list.</p>
+      </div>
+
+      <div class="step">
+        <span class="step-number">Step 3</span>
+        <h4>Send on WhatsApp</h4>
+        <p>We confirm pricing and delivery details manually.</p>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ================= TRUST SECTION ================= -->
+<section class="trust-section">
+
+  <div class="trust-container">
+
+    <div class="trust-item">
+      <i class="fas fa-hand-holding-heart"></i>
+      <h4>Handcrafted Quality</h4>
+      <p>Every product is carefully handmade with attention to detail.</p>
+    </div>
+
+    <div class="trust-item">
+      <i class="fas fa-box-open"></i>
+      <h4>Bulk Orders Available</h4>
+      <p>Special pricing available for wedding &amp; festive bulk orders.</p>
+    </div>
+
+    <div class="trust-item">
+      <i class="fab fa-whatsapp"></i>
+      <h4>Direct WhatsApp Support</h4>
+      <p>Quick responses and manual order confirmation.</p>
+    </div>
+
+    <div class="trust-item">
+      <i class="fas fa-truck"></i>
+      <h4>Pan India Shipping</h4>
+      <p>We deliver safely across India with secure packaging.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= CATEGORIES ================= -->
+<section class="categories">
+  <h2>Explore Our Collections</h2>
+
+  <div class="category-grid">
+
+    <div class="category-card">
+      <img src="/images/untitled design.png" alt="Wedding Collection">
+      <h3>Wedding Collection</h3>
+      <p>Discover handcrafted wedding essentials &amp; return gifts.</p>
+      <a href="/wedding.html" class="view-btn">View Collection →</a>
+    </div>
+
+    <div class="category-card">
+      <img src="/images/Untitled design (2).png" alt="Festive Collection">
+      <h3>Festive Collection</h3>
+      <p>Explore vibrant handmade décor &amp; pooja essentials.</p>
+      <a href="/festive.html" class="view-btn">View Collection →</a>
+    </div>
+
+    <div class="category-card">
+      <img src="/images/Untitled design (1).png" alt="Raw Material">
+      <h3>Raw Material</h3>
+      <p>All crafting supplies for artisans &amp; decorators.</p>
+      <a href="/raw.html" class="view-btn">View Collection →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="main-footer">
+
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <h3>Radhe Handicraft</h3>
+      <p>Handmade wedding, festive &amp; raw materials crafted with love.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/index.html">Home</a>
+      <a href="/wedding.html">Wedding</a>
+      <a href="/festive.html">Festive</a>
+      <a href="/raw.html">Raw Material</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p><i class="fab fa-whatsapp"></i> +91 79830 07915</p>
+      <p><i class="fas fa-envelope"></i> radhehandicraft9927@gmail.com</p>
+      <p><i class="fas fa-map-marker-alt"></i> Chandpur (Bijnor), U.P., India</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Radhe Handicraft | All Rights Reserved
+  </div>
+
+</footer>
+
+<!-- ================= CART PANEL ================= -->
+<div class="cart-panel" id="cartPanel">
+
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <span class="close-cart" onclick="toggleCart()">✖</span>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
+    Send Order on WhatsApp
+  </button>
+
+  <p class="manual-note">
+    Orders are confirmed manually via WhatsApp.
+    Final pricing &amp; delivery will be shared after confirmation.
+  </p>
+
+</div>
+
+<!-- script.js loads the cart from localStorage automatically on every page -->
+<script src="/script.js"></script>
+
+</body>
+</html>

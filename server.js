@@ -312,5 +312,3 @@ ${productList}
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
-Done
-The full file is ready for you below — this is the com

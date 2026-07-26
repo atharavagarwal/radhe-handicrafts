@@ -3,22 +3,29 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-// Load .env manually
-const envFile = fs.readFileSync(".env", "utf8");
-envFile.split("\n").forEach(line => {
-  const trimmed = line.trim();
-  if (!trimmed || trimmed.startsWith("#")) return;
-  const index = trimmed.indexOf("=");
-  if (index === -1) return;
-  const key = trimmed.substring(0, index).trim();
-  const value = trimmed.substring(index + 1).trim().replace(/\r/g, "");
-  if (key) process.env[key] = value;
-});
+// Load .env manually — ONLY for local development.
+// On Render (or any host), you set GEMINI_API_KEY in the dashboard's
+// "Environment" tab instead, so this block is skipped safely in production.
+const envPath = path.join(__dirname, ".env");
+if (fs.existsSync(envPath)) {
+  const envFile = fs.readFileSync(envPath, "utf8");
+  envFile.split("\n").forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) return;
+    const index = trimmed.indexOf("=");
+    if (index === -1) return;
+    const key = trimmed.substring(0, index).trim();
+    const value = trimmed.substring(index + 1).trim().replace(/\r/g, "");
+    if (key) process.env[key] = value;
+  });
+}
 
 console.log("GEMINI KEY loaded:", process.env.GEMINI_API_KEY ? "YES" : "NO");
-console.log("KEY VALUE:", JSON.stringify(process.env.GEMINI_API_KEY))
+
 const app = express();
-const PORT = 3000;
+// Render (and most hosts) assign the port dynamically via process.env.PORT.
+// Falls back to 3000 for local development.
+const PORT = process.env.PORT || 3000;
 
 // ==============================
 // MIDDLEWARE
@@ -74,7 +81,7 @@ app.get("/api/images/:sku", (req, res) => {
 
 // ==============================
 // AI IMAGE SEARCH PROXY (GEMINI)
-
+// ==============================
 app.post("/api/ai", (req, res) => {
   const { base64, mimeType, productList } = req.body;
 

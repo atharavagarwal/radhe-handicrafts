@@ -20,7 +20,7 @@
 <header class="main-header">
   <div class="container">
 
-    <!-- TOP ROW -->
+    <!-- TOP ROW: brand + icons, all on one line -->
     <div class="top-row">
 
       <!-- LEFT: BRAND -->
@@ -32,49 +32,22 @@
         </div>
       </div>
 
-      <!-- RIGHT SIDE -->
+      <!-- RIGHT SIDE: image search, filter, cart, hamburger -->
       <div class="header-right">
 
-        <!-- SEARCH -->
-        <div class="raw-search" id="rawSearch">
-          <div class="search-filter-row">
-            <input 
-              type="text" 
-              id="searchInput" 
-              placeholder="Search raw materials..."
-              oninput="handleSearchInput(); applyFilters();"
-              autocomplete="off">
-
-            <button class="filter-toggle-btn" onclick="toggleMobileFilter()">
-              ☰ Filter
-            </button>
-          </div>
-
-          <div id="suggestions" class="suggestions-box"></div>
-
-          <div class="mobile-filter-panel" id="mobileFilterPanel">
-            <div id="categoryChipsMobile" class="category-chips"></div>
-          </div>
-        </div>
         <!-- IMAGE SEARCH BUTTON -->
+        <label class="img-search-btn" title="Search by image — Upload a photo to find similar products">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3.5" fill="#4285F4"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="#EA4335" stroke-width="2" stroke-dasharray="15 5"/>
+            <path d="M12 2v4M22 12h-4M12 22v-4M2 12h4" stroke="#FBBC05" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="file" id="imageSearchInput" accept="image/*" onchange="handleImageSearch(event)" hidden>
+        </label>
 
-<label class="img-search-btn" title="Search by image — Upload a photo to find similar products">
-  <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="3.5" fill="#4285F4"/>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="#EA4335" stroke-width="2" stroke-dasharray="15 5"/>
-    <path d="M12 2v4M22 12h-4M12 22v-4M2 12h4" stroke="#FBBC05" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-  <input type="file" id="imageSearchInput" accept="image/*" onchange="handleImageSearch(event)" hidden>
-</label>
-
-<!-- Tooltip -->
-<div class="lens-tooltip" id="lensTooltip">
-  🔍 Search by Image — Upload any product photo to find similar items in our catalogue
-</div>
-<!-- AI Search Status -->
-<div id="aiSearchStatus" class="ai-search-status" style="display:none">
-  <span class="ai-spinner">⏳</span> Analysing image...
-</div>
+        <button class="filter-toggle-btn" onclick="toggleMobileFilter()">
+          ☰ Filter
+        </button>
 
         <!-- ✅ CART -->
         <div class="cart-icon" onclick="toggleCart()">
@@ -87,6 +60,35 @@
         </div>
 
       </div>
+
+    </div>
+
+    <!-- SEARCH ROW: its own full-width row under the brand row -->
+    <div class="raw-search" id="rawSearch">
+      <div class="search-filter-row">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search raw materials..."
+          oninput="handleSearchInput(); applyFilters();"
+          autocomplete="off">
+      </div>
+
+      <div id="suggestions" class="suggestions-box"></div>
+
+      <div class="mobile-filter-panel" id="mobileFilterPanel">
+        <div id="categoryChipsMobile" class="category-chips"></div>
+      </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="lens-tooltip" id="lensTooltip">
+      🔍 Search by Image — Upload any product photo to find similar items in our catalogue
+    </div>
+    <!-- AI Search Status -->
+    <div id="aiSearchStatus" class="ai-search-status" style="display:none">
+      <span class="ai-spinner">⏳</span> Analysing image...
+    </div>
 
     </div>
 

@@ -3271,13 +3271,15 @@ nav a:hover {
   gap: 12px;
 }
 
-/* SEARCH inside header — inline by default (desktop) */
+/* SEARCH — its own row below the brand row */
 .raw-search {
   position: static;
   background: transparent;
   box-shadow: none;
   padding: 0;
   z-index: auto;
+  margin-top: 12px;
+  width: 100%;
 }
 
 .search-filter-row {
@@ -4145,4 +4147,290 @@ nav a:hover {
   font-size: 11px;
   color: #ff4d00;
   font-weight: 700;
+}
+/* ================================================
+   RAW SEARCH / FILTER — DEFINITIVE MOBILE FIX
+   (Search row is now its own full-width block under
+   the brand/icons row — see updated raw.html markup —
+   so it naturally spans the full header width without
+   flex-wrap tricks, and never overlaps content below
+   it when the filter panel opens.)
+================================================ */
+@media (max-width: 768px) {
+
+  .header-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+  }
+
+  .raw-search,
+  #rawSearch {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+    z-index: auto !important;
+  }
+
+  .search-filter-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100%;
+  }
+
+  .raw-search input,
+  #rawSearch input {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05) !important;
+  }
+
+  .img-search-btn {
+    flex: 0 0 auto !important;
+    width: 36px !important;
+    height: 36px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05) !important;
+  }
+
+  .filter-toggle-btn {
+    flex: 0 0 auto !important;
+    padding: 8px 12px !important;
+    font-size: 12.5px !important;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(255,77,0,0.25) !important;
+  }
+
+  /* Suggestions dropdown anchors to the full-width search bar */
+  .suggestions-box {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    top: 100% !important;
+  }
+
+  /* Filter chips panel sits in normal flow below the search row,
+     so opening it pushes the product grid down instead of
+     overlapping it */
+  .mobile-filter-panel {
+    position: static !important;
+    width: 100%;
+    padding: 8px 0 2px !important;
+  }
+  .mobile-filter-panel.open {
+    margin-top: 8px !important;
+  }
+  .mobile-filter-panel .category-chips {
+    gap: 6px !important;
+  }
+  .mobile-filter-panel .chip {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .catalogue-layout {
+    padding-top: 14px !important;
+  }
+
+  .result-count {
+    margin: 6px 0 !important;
+  }
+}
+
+/* ================================================
+   HEADER — TRUE FULL-BLEED BACKGROUND
+   Forces the beige header to the real screen edges
+   using the 100vw/negative-margin technique, which
+   works regardless of any parent container's width
+   or padding — the standard fix for a background
+   that stops short of the viewport edge.
+================================================ */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .main-header {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    box-sizing: border-box !important;
+  }
+
+  .main-header .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .top-row {
+    width: 100% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .brand {
+    gap: 10px !important;
+  }
+
+  .brand img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .brand h1 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+  }
+
+  .brand span {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    font-size: 18px !important;
+  }
+}
+
+/* ================================================
+   INDEX.HTML — MOBILE HAMBURGER BESIDE THE LOGO
+   Root cause of the big tan bar under the logo: a
+   generic `nav { background: #e9d79f }` rule (further
+   up in this file) colors ANY <nav> element, including
+   <nav class="main-nav"> that wraps the hamburger/cart.
+   This block neutralizes that and pins the hamburger +
+   cart icon beside the brand row instead of letting the
+   <nav> render as its own full-width colored block.
+================================================ */
+@media (max-width: 768px) {
+
+  .main-header .container {
+    position: relative;
+  }
+
+  .main-nav {
+    position: absolute !important;
+    top: 12px !important;
+    right: 14px !important;
+    width: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+
+  .main-nav .menu-toggle {
+    display: block !important;
+    font-size: 22px !important;
+  }
+
+  .main-nav .cart-icon {
+    font-size: 18px !important;
+  }
+
+  /* Dropdown opens as a clean full-width overlay below the header */
+  .main-nav .nav-links {
+    position: fixed !important;
+    top: 62px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: white !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 16px 0 !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+    display: none;
+    z-index: 1300 !important;
+  }
+
+  .main-nav .nav-links.show {
+    display: flex !important;
+  }
+
+  /* Give the search row below the brand its own breathing
+     room now that the nav floats over the top-right corner */
+  .brand-search {
+    padding-right: 60px;
+  }
+}
+
+/* ================================================
+   COMING SOON SECTION (wedding.html / festive.html)
+================================================ */
+.coming-soon-section {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.coming-soon-card {
+  max-width: 480px;
+}
+
+.coming-soon-icon {
+  font-size: 48px;
+  margin-bottom: 18px;
+}
+
+.coming-soon-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #2d2d2d;
+  margin-bottom: 12px;
+}
+
+.coming-soon-card p {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.coming-soon-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff4d00, #ff7300);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(255,77,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.coming-soon-btn:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .coming-soon-section {
+    min-height: 45vh;
+    padding: 40px 16px;
+  }
+  .coming-soon-card h2 {
+    font-size: 22px;
+  }
 }

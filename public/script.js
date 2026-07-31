@@ -760,9 +760,9 @@ function selectModalVariant(event, variantIndex) {
   document.getElementById("modalPrice").innerText = "₹" + v.price;
   document.getElementById("modalQuantity").innerText = v.quantity;
 
-  const buttons = document.querySelectorAll("#modalSizes .size-btn");
+  const buttons = document.querySelectorAll("#modalSizes .size-btn, #modalSizes .qty-pill-btn");
   buttons.forEach(btn => btn.classList.remove("active-size"));
-  event.target.classList.add("active-size");
+  event.target.closest("button").classList.add("active-size");
 }
 
 function addToCartVariant(event, index) {

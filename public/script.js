@@ -1,7 +1,7 @@
 // ==============================
 // GLOBAL STATE
 // ==============================
-const WHATSAPP_NUMBER = "917983007915"; // Single source of truth for phone number
+const WHATSAPP_NUMBER = "919458509972"; // Single source of truth for phone number
 
 let currentPage = 1;
 const productsPerPage = 24;
@@ -220,6 +220,10 @@ function sendWhatsAppOrder() {
 // LOAD PRODUCTS
 // ==============================
 function loadProducts() {
+  // Determine which catalogue this page shows. raw.html -> raw materials,
+  // festive.html -> festive collection. Both share this same script.js.
+  const isFestivePage = window.location.pathname.includes("festive");
+  const apiEndpoint = isFestivePage ? "/api/festive" : "/api/products";
   const container = document.getElementById("rawContainer");
 
   if (container) {
@@ -243,7 +247,7 @@ function loadProducts() {
     `;
   }
 
-  fetch("/api/products")
+  fetch(apiEndpoint)
     .then(res => res.json())
     .then(data => {
 
@@ -391,10 +395,11 @@ function renderProducts(products) {
     const globalIndex = start + index;
 
     let coloursHTML = "";
-    if (p.availableColours) {
-      coloursHTML = Array.isArray(p.availableColours)
-        ? p.availableColours.join(", ")
-        : p.availableColours;
+    const coloursRaw = p.availableColours || p.colours;
+    if (coloursRaw) {
+      coloursHTML = Array.isArray(coloursRaw)
+        ? coloursRaw.join(", ")
+        : coloursRaw;
     }
 
     // ✅ FULL CARD HTML (FIXED)
@@ -413,7 +418,7 @@ function renderProducts(products) {
 
         <div class="row-details">
           <h3>${p.name}</h3>
-          <p class="short-desc">${p.material} • ${p.size}</p>
+          <p class="short-desc">${[p.description || p.material, p.size].filter(Boolean).join(" • ")}</p>
 
           <div class="full-details" id="details-${p.SKU}">
             <p>Quantity: ${p.quantity || " "}</p>
@@ -577,12 +582,13 @@ function updateModal(direction = "next") {
 
   document.getElementById("modalName").innerText = p.name;
   document.getElementById("modalPrice").innerText = "₹" + p.variants[0].price;
-  document.getElementById("modalMaterial").innerText = "Material: " + p.material;
+  document.getElementById("modalMaterial").innerText =
+    p.material ? "Material: " + p.material : (p.description || "");
   document.getElementById("modalSize").innerText = "Size: " + p.variants[0].size;
   document.getElementById("modalQuantity").innerText = "Quantity: " + p.variants[0].quantity;
  
 document.getElementById("modalColours").innerText =
-    p.availableColours ? "Colours: " + p.availableColours : "";
+    (p.availableColours || p.colours) ? "Colours: " + (p.availableColours || p.colours) : "";
 
   // Render similar products
   renderSimilarProducts(p);
@@ -646,7 +652,7 @@ function applyFilters(selectedCategory = "all") {
       // Split search into individual words and check all match
 const searchWords = searchValue.trim().split(/\s+/);
 const searchTarget = (
-  p.name + " " + p.material + " " + p.category + " " + (p.availableColours || "")
+  p.name + " " + (p.material || p.description || "") + " " + p.category + " " + (p.availableColours || p.colours || "")
 ).toLowerCase();
 const matchesSearch = searchWords.every(word => searchTarget.includes(word));
 
@@ -675,7 +681,7 @@ function handleSearchInput() {
 
 const matches = allProducts.filter(p => {
   const searchText = (
-    p.name + " " + p.material + " " + p.category + " " + (p.availableColours || "")
+    p.name + " " + (p.material || p.description || "") + " " + p.category + " " + (p.availableColours || p.colours || "")
   ).toLowerCase();
   const words = value.trim().split(/\s+/);
   return words.every(word => searchText.includes(word));
@@ -760,9 +766,9 @@ function selectModalVariant(event, variantIndex) {
   document.getElementById("modalPrice").innerText = "₹" + v.price;
   document.getElementById("modalQuantity").innerText = v.quantity;
 
-  const buttons = document.querySelectorAll("#modalSizes .size-btn");
+  const buttons = document.querySelectorAll("#modalSizes .size-btn, #modalSizes .qty-pill-btn");
   buttons.forEach(btn => btn.classList.remove("active-size"));
-  event.target.classList.add("active-size");
+  event.target.closest("button").classList.add("active-size");
 }
 
 function addToCartVariant(event, index) {

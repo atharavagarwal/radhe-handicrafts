@@ -35,47 +35,72 @@ app.use(express.json({ limit: "10mb" }));
 
 
 // ==============================
-// PRODUCTS API
+// SHARED HELPER: serve a JSON catalogue file from /data
 // ==============================
-app.get("/api/products", (req, res) => {
-  const filePath = path.join(__dirname, "data", "products.json");
+function serveCatalogue(fileName) {
+  return (req, res) => {
+    const filePath = path.join(__dirname, "data", fileName);
 
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading products:", err);
-      return res.status(500).json({ error: "Failed to load products" });
-    }
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        console.error(`Error reading ${fileName}:`, err);
+        return res.status(500).json({ error: `Failed to load ${fileName}` });
+      }
 
-    try {
-      const products = JSON.parse(data);
-      res.json(products);
-    } catch (parseErr) {
-      console.error("JSON parse error:", parseErr);
-      res.status(500).json({ error: "Invalid JSON format" });
-    }
-  });
-});
+      try {
+        const products = JSON.parse(data);
+        res.json(products);
+      } catch (parseErr) {
+        console.error("JSON parse error:", parseErr);
+        res.status(500).json({ error: "Invalid JSON format" });
+      }
+    });
+  };
+}
+
+// ==============================
+// PRODUCTS API (Raw Material)
+// ==============================
+app.get("/api/products", serveCatalogue("products.json"));
+
+// ==============================
+// FESTIVE API
+// ==============================
+// Reads data/festive.json — same schema as products.json.
+// Drop your real festive catalogue in that file and this route just works.
+app.get("/api/festive", serveCatalogue("festive.json"));
 
 
 // ==============================
 // IMAGES API
 // ==============================
+// Looks for images matching a SKU across both the raw and festive image
+// folders, so the same endpoint works for either catalogue without the
+// frontend needing to know which collection a product belongs to.
 app.get("/api/images/:sku", (req, res) => {
   const sku = req.params.sku;
-  const folder = path.join(__dirname, "public", "images", "raw");
+  const folders = [
+    { dir: path.join(__dirname, "public", "images", "raw"), urlPrefix: "/images/raw/" },
+    { dir: path.join(__dirname, "public", "images", "festive"), urlPrefix: "/images/festive/" }
+  ];
 
-  fs.readdir(folder, (err, files) => {
-    if (err) {
-      console.error("Error reading images folder:", err);
-      return res.json([]);
-    }
+  const readFolder = ({ dir, urlPrefix }) =>
+    new Promise(resolve => {
+      fs.readdir(dir, (err, files) => {
+        if (err) return resolve([]); // folder missing is fine, just skip it
+        const matched = files
+          .filter(f => f.startsWith(sku))
+          .map(f => `${urlPrefix}${f}`);
+        resolve(matched);
+      });
+    });
 
-    const matched = files
-      .filter(f => f.startsWith(sku))
-      .map(f => `/images/raw/${f}`);
-
-    res.json(matched);
-  });
+  Promise.all(folders.map(readFolder))
+    .then(results => res.json(results.flat()))
+    .catch(err => {
+      console.error("Error reading images folders:", err);
+      res.json([]);
+    });
 });
 
 

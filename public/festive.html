@@ -4,55 +4,264 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Festive Collection | Radhe Handicraft</title>
-  <link rel="stylesheet" href="style.css?v=2">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/style.css?v=2">
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header>
-      <img src="RH LOGO.png" class="logo" alt="Radhe Handicraft Logo">
-      <h1>Radhe Handicraft</h1>
-      <p>Art that speaks, tradition that lives 🌸</p>
-  </header>
-  <!-- Navigation Bar -->
-<nav>
-    <a href="index.html">Home</a>
-    <a href="wedding.html">Wedding Collection</a>
-    <a href="festive.html">Festive Collection</a>
-    <a href="raw.html">Raw Material</a>
-    <a href="contact.html">Contact Us</a>
-    <div class="cart-icon" onclick="toggleCart()">
-      🛒 <span id="cartCount">0</span>
-    </div>
-</nav>
+<header class="main-header">
+  <div class="container">
 
-</nav>
+    <!-- TOP ROW: brand + icons, all on one line -->
+    <div class="top-row">
 
-
-  <!-- Festive Products -->
-  <section class="coming-soon-section">
-      <div class="coming-soon-card">
-          <div class="coming-soon-icon">🪔</div>
-          <h2>Festive Collection — Coming Soon</h2>
-          <p>Our Diwali, Ganpati, and Rakhi décor is on its way. Meanwhile, browse our raw materials to plan and craft your own festive pieces.</p>
-          <a href="/raw.html" class="coming-soon-btn">Explore Raw Section →</a>
+      <!-- LEFT: BRAND -->
+      <div class="brand">
+        <img src="/images/RH LOGO.png" alt="Logo">
+        <div>
+          <h1>Radhe Handicraft</h1>
+          <span>Handcrafted pieces • Wedding • Festive</span>
+        </div>
       </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-      <p>© 2025 Radhe Handicraft | Designed by Atharav Agarwal</p>
-  </footer>
-  <div class="cart-panel" id="cartPanel">
-  <h3>Your Cart</h3>
+      <!-- RIGHT SIDE: image search, filter, cart, hamburger -->
+      <div class="header-right">
+
+        <!-- IMAGE SEARCH BUTTON -->
+        <label class="img-search-btn" title="Search by image — Upload a photo to find similar products">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3.5" fill="#4285F4"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="#EA4335" stroke-width="2" stroke-dasharray="15 5"/>
+            <path d="M12 2v4M22 12h-4M12 22v-4M2 12h4" stroke="#FBBC05" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="file" id="imageSearchInput" accept="image/*" onchange="handleImageSearch(event)" hidden>
+        </label>
+
+        <button class="filter-toggle-btn" onclick="toggleMobileFilter()">
+          ☰ Filter
+        </button>
+
+        <!-- ✅ CART -->
+        <div class="cart-icon" onclick="toggleCart()">
+          🛒 <span id="cartCount">0</span>
+        </div>
+
+        <!-- MENU -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SEARCH ROW: its own full-width row under the brand row -->
+    <div class="raw-search" id="rawSearch">
+      <div class="search-filter-row">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search festive collection..."
+          oninput="handleSearchInput(); applyFilters();"
+          autocomplete="off">
+      </div>
+
+      <div id="suggestions" class="suggestions-box"></div>
+
+      <div class="mobile-filter-panel" id="mobileFilterPanel">
+        <div id="categoryChipsMobile" class="category-chips"></div>
+      </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="lens-tooltip" id="lensTooltip">
+      🔍 Search by Image — Upload any product photo to find similar items in our catalogue
+    </div>
+    <!-- AI Search Status -->
+    <div id="aiSearchStatus" class="ai-search-status" style="display:none">
+      <span class="ai-spinner">⏳</span> Analysing image...
+    </div>
+
+    </div>
+
+  </div>
+
+
+    <!-- NAV LINKS -->
+    <nav class="nav-links" id="navLinks">
+      <a href="/index.html">Home</a>
+      <a href="/wedding.html">Wedding</a>
+      <a href="/festive.html">Festive</a>
+      <a href="/raw.html">Raw</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+
+  </div>
+</header>
+
+
+
+<section class="catalogue-layout">
+
+  <!-- FILTER SIDEBAR (desktop only) -->
+  <aside class="filter-sidebar">
+    <h3>Filters</h3>
+    <div class="filter-group">
+      <h4>Category</h4>
+      <div id="categoryChips" class="category-chips"></div>
+    </div>
+  </aside>
+
+  <!-- PRODUCT AREA -->
+  <div class="product-area">
+    <div class="result-count" id="resultCount"></div>
+    <div id="rawContainer"></div>
+    <div id="pagination" class="pagination"></div>
+  </div>
+</section>
+<section id="recentlyViewedSection" style="display:none">
+  <div class="rv-section-inner">
+    <div class="rv-header">
+      <h3>🕐 Recently Viewed</h3>
+      <button class="rv-clear" onclick="localStorage.removeItem('recentlyViewed'); renderRecentlyViewed()">Clear</button>
+    </div>
+    <div id="recentlyViewedContainer" class="rv-container"></div>
+  </div>
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="main-footer">
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <h3>Radhe Handicraft</h3>
+      <p>Handmade wedding, festive & raw materials crafted with love.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/index.html">Home</a>
+      <a href="/wedding.html">Wedding</a>
+      <a href="/festive.html">Festive</a>
+      <a href="/raw.html">Raw Material</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p><i class="fab fa-whatsapp"></i> +91 798300915</p>
+      <p><i class="fas fa-envelope"></i> radhehandicraft9927@gmail.com</p>
+      <p><i class="fas fa-map-marker-alt"></i> Chandpur (Bijnor), U.P., India</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Radhe Handicraft | All Rights Reserved
+  </div>
+  <!-- RECENTLY VIEWED -->
+
+</footer>
+
+<!-- ================= CART PANEL ================= -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <span class="close-cart" onclick="toggleCart()">✖</span>
+  </div>
 
   <div id="cartItems"></div>
 
   <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
     Send Order on WhatsApp
   </button>
+
+  <p class="manual-note">
+    Orders are confirmed manually via WhatsApp.
+    Final pricing & delivery will be shared after confirmation.
+  </p>
+</div>
+
+<!-- ================= IMAGE PREVIEW ================= -->
+<div id="imagePreview" class="image-preview">
+  <span class="close-preview" onclick="closeImagePreview()">✖</span>
+  <img id="previewImg" src="">
+</div>
+
+<!-- ================= PRODUCT MODAL ================= -->
+<div class="product-modal" id="productModal">
+  
+<div class="modal-content">
+  <div style="width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 12px;cursor:pointer" onclick="closeModal()"></div>
+    <span class="close-modal" onclick="closeModal()">✕</span>
+    <span class="arrow left" onclick="prevProduct()">❮</span>
+    <span class="arrow right" onclick="nextProduct()">❯</span>
+
+    <div class="modal-body">
+
+      <div class="modal-image-section">
+        <img id="modalImage" src="">
+      </div>
+      <div id="modalThumbnails" class="modal-thumbs">
+        <!-- Thumbnail images will be populated by JavaScript -->
+      </div>
+
+
+      <div class="modal-details">
+        <h2 id="modalName"></h2>
+        <p class="modal-price" id="modalPrice"></p>
+        <p id="modalMaterial"></p>
+        <p id="modalSize"></p>
+        <p id="modalQuantity"></p>
+        <p id="modalColours"></p>
+         <!-- SIZE OPTIONS -->
+<div id="modalSizes" class="size-options"></div>
+   <div class="modal-qty">
+  <button class="qty-btn minus" onclick="decreaseQty()">−</button>
+  <span id="modalQty" class="qty-value">1</span>
+  <button class="qty-btn plus" onclick="increaseQty()">+</button>
 </div>
 
 
+
+        <button id="modalAddToCart" class="modal-cart-btn">
+          🛒 Add to Cart
+        </button>
+        <button class="share-icon-btn modal-share-icon" onclick="shareProductFromModal()" title="Share">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+</button>
+        <div id="addedIndicator" class="added-indicator">
+          ✔ Added to Cart
+        </div>
+      </div>
+ 
+    </div>
+      <!-- SIMILAR PRODUCTS -->
+    <div class="modal-similar" id="modalSimilar" style="display:none">
+      <h4 class="similar-title">Similar Products</h4>
+      <div class="similar-container" id="similarContainer"></div>
+    </div>
+  </div>
+</div>
+<div class="mobile-cart-btn" onclick="toggleCart()">
+  🛒
+  <span id="mobileCartCount">0</span>
+</div>
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="/script.js"></script>
+<!-- WHATSAPP FLOAT -->
+<a class="wa-float" href="https://wa.me/919458509972?text=Hi%20Radhe%20Handicraft%2C%20I%20need%20help!" target="_blank" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
 </body>
 </html>

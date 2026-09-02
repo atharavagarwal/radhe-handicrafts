@@ -1,0 +1,35 @@
+[
+  {
+    "SKU": "RH-FEST-001",
+    "name": "Handmade Diwali Diya Set",
+    "price": "99; 149; 199",
+    "quantity": "Set of 6; Set of 6; Set of 6",
+    "size": "Small, Medium, Large",
+    "description": "Handcrafted clay diyas decorated with gota lace, perfect for Diwali decor.",
+    "category": "Diwali, Festive Decor",
+    "colours": "Red, Gold, Multicolor",
+    "image": "/images/default.jpg"
+  },
+  {
+    "SKU": "RH-FEST-002",
+    "name": "Ganpati Decoration Backdrop",
+    "price": "899; 1299",
+    "quantity": "1 Piece; 1 Piece",
+    "size": "4x6 ft, 6x8 ft",
+    "description": "MDF and fabric backdrop with festive motifs, ideal for Ganpati pandal decor.",
+    "category": "Ganpati, Festive Decor",
+    "colours": "Gold, Red",
+    "image": "/images/default.jpg"
+  },
+  {
+    "SKU": "RH-FEST-003",
+    "name": "Designer Rakhi",
+    "price": "40; 60; 80",
+    "quantity": "1 Piece; 1 Piece; 1 Piece",
+    "size": "N/A",
+    "description": "Beaded rakhi with gota work, available in multiple colour options.",
+    "category": "Rakhi, Festive Decor",
+    "colours": "Red, Yellow, Multicolor",
+    "image": "/images/default.jpg"
+  }
+]
